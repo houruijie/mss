@@ -730,7 +730,7 @@ class Service(object):
 
             # 保持一个redis连接
             self.redis_handle = redis.Redis(
-                host=self.redis_ip, port=self.redis_port,decode_responses=True)
+                host=self.redis_ip, port=self.redis_port,password=self.redis_password, decode_responses=True)
 
             self.task_group_id = "task_group"  # 高优先级group
             self.service_state = temp['state']
@@ -1156,7 +1156,7 @@ class Service(object):
 
         except Exception as e:
             # 重连redis
-            self.redis_handle = redis.Redis(host=self.redis_ip, port=self.redis_port, decode_responses=True)
+            self.redis_handle = redis.Redis(host=self.redis_ip, port=self.redis_port,password=self.redis_password, decode_responses=True)
             pipe = self.redis_handle.pipeline(transaction=False)
             raise
 
@@ -1196,7 +1196,7 @@ class Service(object):
         try:
             self.redis_handle.sunionstore(set_name, set_name, aid_set_name)
         except Exception as e:
-            self.redis_handle = redis.Redis(host=self.redis_ip, port=self.redis_port, decode_responses=True)
+            self.redis_handle = redis.Redis(host=self.redis_ip, port=self.redis_port,password=self.redis_password, decode_responses=True)
             raise
 
     def _store_valid_data(self, set_name, aid_set_name):
